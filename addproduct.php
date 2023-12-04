@@ -10,6 +10,22 @@
     <link rel="stylesheet" href="./css/admin.css">
 </head>
 <body>
+    <?php
+        include 'connect.php';
+        if(isset($_POST['submit'])){
+            $productName = $_POST['productName'];
+            $cat_id = $_POST['cat_id'];
+            $image = $_FILES['image'];
+            $imageName = $image['name'];
+            $price = $_POST['price'];
+            $discount = $_POST['discount'];
+            $weight = $_POST['weight'];
+            $ngaytao = date('Y-m-d H:i:s');
+            $sql ="INSERT INTO `product`(`tensanpham`, `hinhanhsp`, `giagoc`, `giamgia`, `trongluong`, `ngaytao`,  `cat_id`) VALUES ('$productName','$imageName','$price','$discount','$weight','$ngaytao','$cat_id')";
+            $conn->exec($sql);
+            move_uploaded_file($image['tmp_name'],'uploads/'.$imageName);
+        }
+    ?>
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
@@ -20,37 +36,18 @@
                 </h3>
             </div>
             <ul class="list-unstyled components">
-                <!-- <li class="dropdown">
-                    <a href="index.php?req=statistics" class="dashboard">
-                        <i class="fa-solid fa-chart-simple"></i><span>Quản lý thống kê</span></a>
-                </li> -->
                 <li class="dropdown">
-                    <a href="./category.html">
+                    <a href="./category.php">
                         <i class="fa-solid fa-table-list"></i><span>Quản lý danh mục</span>
                     </a>
                 </li>
                 <li class="dropdown">
-                    <a href="./product.html">
+                    <a href="./product.php">
                         <i class="fa-solid fa-cart-shopping"></i><span>Quản lý sản phẩm</span>
                     </a>
                 </li>
-                <!-- <li class="dropdown">
-                    <a href="index.php?req=comment">
-                        <i class="fa-regular fa-comment-dots"></i></i><span>Quản lý bình luận</span>
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="index.php?req=order">
-                        <i class="fa-solid fa-bag-shopping"></i><span>Quản lý đơn hàng</span>
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="index.php?req=account">
-                        <i class="fa-solid fa-users"></i><span>Quản lý người dùng</span>
-                    </a>
-                </li> -->
                 <li>
-                    <a href="./index.html">
+                    <a href="./index.php">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i><span>Đăng xuất</span>
                     </a>
                 </li>
@@ -64,7 +61,7 @@
                     <li class="breadcrumb-item" style="color: #333333;" aria-current="page">Thêm mới sản phẩm</li>
                 </ol>
             </nav>
-            <a class="text-light text-decoration-none btn btn-primary btn-sm mb-3" href="./product.html">
+            <a class="text-light text-decoration-none btn btn-primary btn-sm mb-3" href="./product.php">
                 <i class="fa-solid fa-list-ul"></i> Danh sách sản phẩm
             </a>
             <form action="" method="POST" enctype="multipart/form-data">
@@ -76,12 +73,19 @@
                     </div>
                     <div class="form-group col">
                         <label for="productName" style="color: #333333;">Danh mục</label>
-                        <select name="category_id" class="form-control form-control-sm">
-                            <option>Tất cả</option>
-                            <option>Thịt Heo</option>
-                            <option>Hải Sản</option>
-                            <option>Thịt Bò</option>
-                            <option>Gà & Vịt</option>
+                        <select name="cat_id" class="form-control form-control-sm">
+                        <?php
+                            $sql = "SELECT * FROM `category`";
+                            $stsm = $conn->prepare($sql);
+                            $stsm->execute();
+                            $rows = $stsm->fetchAll(PDO::FETCH_ASSOC);
+                            foreach($rows as $item){
+                        ?>
+                        <option value="<?= $item['cat_id'];?>"><?php echo $item['tendanhmuc'];?></option>
+                        
+                        <?php
+                            }
+                        ?>
                         </select>
                     </div>
                 </div>
@@ -104,44 +108,16 @@
                 </div>
                 <div class="form-group d-flex align-items-center">
                     <div>
-                        <img class='border rounded' id="preview-image" src='https://res.cloudinary.com/do9rcgv5s/image/upload/v1695895241/cooky%20market%20-%20PHP/itcq4ouly2zgyzxqwmeh.jpg' alt='Không có ảnh' height='115' width='115'>
                         <input class="form-control form-control-sm d-none" type="file" id="image" name="image" onchange="previewImage(this)">
                         <label for="image" class="form-label label-for-file mt-3">
                             <i class="fa-solid fa-file-image"></i>&nbsp;Chọn ảnh
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label style="color: #333333;" for="description">Mô tả chi tiết</label>
-                    <textarea class="form-control form-control-sm" name="description" id="description" rows="3"></textarea>
-                </div>
                 <input type="submit" class="btn btn-primary btn-block" name="submit" value="THÊM MỚI" />
             </form>
         </div>
-<!-- <script>
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#preview-image').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script> -->
-        
     </div>
-        <!-- <script>
-            function previewImage(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#preview-image').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-        </script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

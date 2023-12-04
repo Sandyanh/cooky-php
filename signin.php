@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooky Market - Đăng ký</title>
+    <title>Cooky Market - Đăng nhập</title>
     <link rel="icon" type="image/x-icon" href="./uploads/favicon-96x96.png">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/page-container.css">
     <link rel="stylesheet" href="./css/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="wrapper">
@@ -66,24 +67,36 @@
                 <div class="home-page-container">
                     <div class="user-wrapper">
                         <div class="user-nav">
-                            <a href="./signin.html">Đăng nhập</a>
-                            <a href="./signup.html" class="activeLogin">Đăng ký</a>
+                            <a href="./signin.php" class="activeLogin">Đăng nhập</a>
+                            <a href="./signup.php">Đăng ký</a>
                         </div>
                         <form action="" id="formAcount" method="POST">
                             <div class="form-group input-login">
-                                <input type="text" placeholder="Họ và tên" name="username">
-                            </div>
-                            <small class="message-error"></small>
-                            <div class="form-group input-login">
-                                <input type="email" placeholder="Email" name="email">
+                                <input type="text" placeholder="Nhập email của bạn" name="email">
                             </div>
                             <small class="message-error"></small>
                             <div class="form-group input-login">
                                 <input type="password" id="pwd" placeholder="********" name="password">
                             </div>
                             <small class="message-error"></small>
-                            <input type="submit" class="btn-login-register" value="Đăng ký" name="submit">
+                            <input type="submit" class="btn-login-register" value="Đăng nhập" name="submit">
                         </form>
+                        <div class="user-foot">
+                            <a href="#" class="clearfix">Quên mật khẩu?</a>
+                            <p class="clearfix">Hoặc đăng nhập với</p>
+                            <li class="loginFb">
+                                <span>
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </span>
+                                <a href="#">Đăng nhập bằng Facebook</a>
+                            </li>
+                            <li class="loginGg">
+                                <span>
+                                    <i class="fa-brands fa-google"></i>
+                                </span>
+                                <a href="#">Đăng nhập bằng Google</a>
+                            </li>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -10,6 +10,28 @@
     <link rel="stylesheet" href="./css/admin.css">
 </head>
 <body>
+    <?php
+        include 'connect.php';
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM `category` WHERE cat_id = $id";
+        $stsm = $conn ->prepare($sql);
+        $stsm->execute();
+        $rows = $stsm->fetch(PDO::FETCH_ASSOC);
+        if(isset($_POST['submit'])){
+            $categoryName = $_POST['categoryName'];
+            $image = $_FILES['image'];
+            $imageName = $image['name'];
+            $ngaytao = date('Y-m-d H:i:s');
+            if(empty($imageName)){
+                $sql = "UPDATE `category` SET `tendanhmuc`='$categoryName',`ngaytao`='$ngaytao'WHERE cat_id = $id";
+            }else{
+                $sql = "UPDATE `category` SET `tendanhmuc`='$categoryName',`hinhanh`='$imageName',`ngaytao`='$ngaytao'WHERE cat_id = $id";
+            }
+            $conn->exec($sql);
+            move_uploaded_file($image['tmp_name'],'uploads/'.$imageName);
+            header("Location: category.php");
+        }
+    ?>
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
@@ -20,12 +42,8 @@
                 </h3>
             </div>
             <ul class="list-unstyled components">
-                <!-- <li class="dropdown">
-                    <a href="index.php?req=statistics" class="dashboard">
-                        <i class="fa-solid fa-chart-simple"></i><span>Quản lý thống kê</span></a>
-                </li> -->
                 <li class="dropdown">
-                    <a href="./category.html">
+                    <a href="./category.php">
                         <i class="fa-solid fa-table-list"></i><span>Quản lý danh mục</span>
                     </a>
                 </li>
@@ -34,23 +52,8 @@
                         <i class="fa-solid fa-cart-shopping"></i><span>Quản lý sản phẩm</span>
                     </a>
                 </li>
-                <!-- <li class="dropdown">
-                    <a href="index.php?req=comment">
-                        <i class="fa-regular fa-comment-dots"></i></i><span>Quản lý bình luận</span>
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="index.php?req=order">
-                        <i class="fa-solid fa-bag-shopping"></i><span>Quản lý đơn hàng</span>
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="index.php?req=account">
-                        <i class="fa-solid fa-users"></i><span>Quản lý người dùng</span>
-                    </a>
-                </li> -->
                 <li>
-                    <a href="./index.html">
+                    <a href="./index.php">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i><span>Đăng xuất</span>
                     </a>
                 </li>
@@ -63,18 +66,18 @@
                     <li style="color: #333333;" class="breadcrumb-item" aria-current="page">Thêm mới danh mục</li>
                 </ol>
             </nav>
-            <a class="text-light text-decoration-none btn btn-primary btn-sm mb-3" href="./category.html">
+            <a class="text-light text-decoration-none btn btn-primary btn-sm mb-3" href="./category.php">
                 <i class="fa-solid fa-list-ul"></i> Danh sách danh mục
             </a>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label style="color: #333333;" for="categoryName">Tên danh mục</label>
-                    <input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm">
+                    <input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" value="<?php echo $rows['tendanhmuc'];?>">
                     <small class="text-danger"></small>
                 </div>
                 <div class="form-group d-flex align-items-center">
                     <div>
-                        <img class='border rounded' id="preview-image" src='https://res.cloudinary.com/do9rcgv5s/image/upload/v1695895241/cooky%20market%20-%20PHP/itcq4ouly2zgyzxqwmeh.jpg' alt='Không có ảnh' height='115' width='115'>
+                        <img src="./uploads/<?php echo $rows['hinhanh'];?>" alt="" width="100" height="100">
                         <input class="form-control form-control-sm d-none" type="file" id="image" name="image" onchange="previewImage(this)">
                         <label for="image" class="form-label label-for-file mt-3">
                             <i class="fa-solid fa-file-image"></i>&nbsp;Chọn ảnh
@@ -82,21 +85,10 @@
                     </div>
                 </div>
                 
-                <input type="submit" class="btn btn-primary btn-block" name="submit" value="THÊM MỚI" />
+                <input type="submit" class="btn btn-primary btn-block" name="submit" value="CẬP NHẬT" />
             </form>
         </div>
     </div>
-<!-- <script>
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#preview-image').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
