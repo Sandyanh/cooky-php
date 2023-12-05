@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,20 +14,34 @@
     <link rel="stylesheet" href="./css/signup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
+    <?php
+    session_start();
+    include 'connect.php';
+    if (isset($_POST['submit'])) {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $sql = "SELECT * FROM signup WHERE email='" . $email . "' AND password='" . $password . "'";
+        $stsm = $conn->prepare($sql);
+        $stsm->execute();
+        $rows = $stsm->fetch(PDO::FETCH_ASSOC);
+        if (is_array($rows)) {
+            $_SESSION['user'] = $rows;
+            header("Location: index.php");
+        }
+    }
+    ?>
     <div class="wrapper">
         <header class="header">
             <div class="navigation-bar">
                 <div class="logo">
-                    <a href="./index.html">
-                        <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695381181/cooky%20market%20-%20PHP/cva2ntghjzrlryixcojp.svg"
-                            alt="Logo Cooky">
+                    <a href="./index.php">
+                        <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695381181/cooky%20market%20-%20PHP/cva2ntghjzrlryixcojp.svg" alt="Logo Cooky">
                     </a>
                 </div>
                 <div class="search-input">
-                    <img class="icon-search"
-                        src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695381877/cooky%20market%20-%20PHP/lieirqymxmairjpyhrwj.svg"
-                        alt="Magnifying Glass">
+                    <img class="icon-search" src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695381877/cooky%20market%20-%20PHP/lieirqymxmairjpyhrwj.svg" alt="Magnifying Glass">
                     <input tabindex="0" type="text" placeholder="Tìm kiếm sản phẩm...">
                 </div>
                 <div class="user">
@@ -34,29 +49,22 @@
                         Tải App Cooky
                     </div>
                     <div class="wishlist action n-btn" title="Danh sách yêu thích">
-                        <img class="icon"
-                            src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695386250/cooky%20market%20-%20PHP/v9hhpbadxib71owdbfkh.svg"
-                            alt="Wishlist">
+                        <img class="icon" src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695386250/cooky%20market%20-%20PHP/v9hhpbadxib71owdbfkh.svg" alt="Wishlist">
                     </div>
                     <button class="cart-icon action n-btn" title="Giỏ hàng">
-                        <img class="icon"
-                            src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695386172/cooky%20market%20-%20PHP/fcmcexgvocebzmhuntfm.svg"
-                            alt="Cart">
+                        <img class="icon" src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695386172/cooky%20market%20-%20PHP/fcmcexgvocebzmhuntfm.svg" alt="Cart">
                     </button>
                     <div class="phone action n-btn">
                         <a href="tel:19002041">
-                            <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695386173/cooky%20market%20-%20PHP/u5u581opcqe1nlesw2bn.svg"
-                                alt="Hotline" class="icon">
+                            <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695386173/cooky%20market%20-%20PHP/u5u581opcqe1nlesw2bn.svg" alt="Hotline" class="icon">
                         </a>
                     </div>
                     <div class="hotline action view-city">
                         <span class="user-name">Hà Nội</span>
-                        <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695387068/cooky%20market%20-%20PHP/ww9hqjdjddhfcrgdiokz.svg"
-                            alt="toggle" class="icon toggle">
+                        <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695387068/cooky%20market%20-%20PHP/ww9hqjdjddhfcrgdiokz.svg" alt="toggle" class="icon toggle">
                     </div>
                     <div class="hotline action login">
-                        <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695381877/cooky%20market%20-%20PHP/wb5pyhdq2alh6cx8ml82.svg"
-                            alt="Login" class="icon">
+                        <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1695381877/cooky%20market%20-%20PHP/wb5pyhdq2alh6cx8ml82.svg" alt="Login" class="icon">
                         <a class="user-name" href="">Đăng nhập</a>
                     </div>
                 </div>
@@ -107,8 +115,7 @@
                     <div class="row">
                         <div class="column">
                             <div class="copyright-img">
-                                <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1697033902/cooky%20market%20-%20PHP/sri9li0oetshdwb4esa4.jpg"
-                                    alt="Dong Cong Dinh" width="100px" height="100px">
+                                <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1697033902/cooky%20market%20-%20PHP/sri9li0oetshdwb4esa4.jpg" alt="Dong Cong Dinh" width="100px" height="100px">
                             </div>
                             <div class="text-copyright">
                                 <h4>CÔNG TY CỔ PHẦN COOKY</h4>
@@ -142,8 +149,7 @@
                             <div class="footer-title">Ứng dụng</div>
                             <div class="download">
                                 <a href="https://apps.apple.com/us/app/cooky-mealkit-delivery/id1056621751">
-                                    <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1697034728/cooky%20market%20-%20PHP/ypt2uelqogfxzfcro8sl.png"
-                                        alt="Tải ứng dụng" width="100px" height="100px">
+                                    <img src="https://res.cloudinary.com/do9rcgv5s/image/upload/v1697034728/cooky%20market%20-%20PHP/ypt2uelqogfxzfcro8sl.png" alt="Tải ứng dụng" width="100px" height="100px">
                                 </a>
                             </div>
                         </div>
@@ -153,4 +159,5 @@
         </footer>
     </div>
 </body>
+
 </html>
