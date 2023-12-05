@@ -100,7 +100,6 @@
                         <div class="title">Ưu Đãi 1K Đến 15K</div>
                         <div class="content-product-container">
                             <div class="promotion-box">
-                                
                                     <?php
                                     foreach($rows as $item){
                                         extract($item);
@@ -126,7 +125,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                        </div>
                                     <?php
                                     }
                                     ?>
